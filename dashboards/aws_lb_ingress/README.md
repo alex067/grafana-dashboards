@@ -1,6 +1,6 @@
 # Application Load Balancer Ingress 
 
-View exported Cloudwatch metrics for the AWS Load Balancer controller, broken down by the cluster, namespace, and target group. Because the generated target group names from the AWS Load Balancer controller are determined by `targetgroup/k8s-{{namespace}}-{{service}}-{{hash}}` the namespace variable is derived from the available target groups. T
+View exported Cloudwatch metrics for the AWS Load Balancer controller, broken down by the cluster, namespace, and target group. Because the generated target group names from the AWS Load Balancer controller are determined by `targetgroup/k8s-{{namespace}}-{{service}}-{{hash}}` the namespace variable is derived from the available target groups.
 
 The dashboard relies on metrics exported by [Prometheus Cloudwatch Exporter](https://github.com/prometheus/cloudwatch_exporter). 
 
