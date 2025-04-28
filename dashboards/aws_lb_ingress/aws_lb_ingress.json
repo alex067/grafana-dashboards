@@ -79,7 +79,32 @@
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "Requests"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 9,
@@ -154,7 +179,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${Prometheus}"
+        "uid": "${Prometheus}" 
       },
       "description": "Request count per target in the target group. This value is derived from the total number of requests divided by the number of healthy targets in the target group.",
       "fieldConfig": {
@@ -267,7 +292,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${Prometheus}"
+        "uid": "${Prometheus}" 
       },
       "fieldConfig": {
         "defaults": {
@@ -409,12 +434,13 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${Prometheus}"
+        "uid": "${Prometheus}" 
       },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "fixedColor": "semi-dark-green",
+            "mode": "fixed"
           },
           "custom": {
             "axisBorderShow": false,
@@ -440,126 +466,14 @@
               "type": "linear"
             },
             "showPoints": "auto",
-            "spanNulls": true,
+            "spanNulls": false,
             "stacking": {
               "group": "A",
-              "mode": "percent"
+              "mode": "none"
             },
             "thresholdsStyle": {
               "mode": "off"
             }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 9
-      },
-      "id": 4,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull",
-            "min",
-            "max",
-            "mean",
-            "variance"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true,
-          "sortBy": "Mean",
-          "sortDesc": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "11.6.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${Prometheus}"
-          },
-          "editorMode": "code",
-          "expr": "sum by (load_balancer)(aws_applicationelb_httpcode_target_2_xx_count_sum{cluster=\"$cluster\",load_balancer=\"$load_balancer\",target_group=~\"$ingress\"})",
-          "instant": false,
-          "legendFormat": "2xx",
-          "range": true,
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${Prometheus}"
-          },
-          "editorMode": "code",
-          "expr": "sum by (load_balancer)(aws_applicationelb_httpcode_target_3_xx_count_sum{cluster=\"$cluster\",load_balancer=\"$load_balancer\",target_group=~\"$ingress\"})",
-          "hide": false,
-          "instant": false,
-          "legendFormat": "3xx",
-          "range": true,
-          "refId": "D"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${Prometheus}"
-          },
-          "editorMode": "code",
-          "expr": "sum by (load_balancer)(aws_applicationelb_httpcode_target_4_xx_count_sum{cluster=\"$cluster\",load_balancer=\"$load_balancer\",target_group=~\"$ingress\"})",
-          "hide": false,
-          "instant": false,
-          "legendFormat": "4xx",
-          "range": true,
-          "refId": "B"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${Prometheus}"
-          },
-          "editorMode": "code",
-          "expr": "sum by (load_balancer)(aws_applicationelb_httpcode_target_5_xx_count_sum{cluster=\"$cluster\",load_balancer=\"$load_balancer\",target_group=~\"$ingress\"})",
-          "hide": false,
-          "instant": false,
-          "legendFormat": "5xx",
-          "range": true,
-          "refId": "C"
-        }
-      ],
-      "title": "Response StatusCode Ratio",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${Prometheus}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "semi-dark-green",
-            "mode": "fixed"
           },
           "mappings": [],
           "thresholds": {
@@ -608,10 +522,162 @@
       "gridPos": {
         "h": 8,
         "w": 12,
-        "x": 12,
+        "x": 0,
         "y": 9
       },
       "id": 12,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "min",
+            "max",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.6.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${Prometheus}"
+          },
+          "editorMode": "code",
+          "expr": "sum(aws_applicationelb_httpcode_target_2_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"}) / (\n    sum(aws_applicationelb_httpcode_target_2_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"}) + sum(aws_applicationelb_httpcode_target_4_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"} or vector(0))+ sum(aws_applicationelb_httpcode_target_3_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"} or vector(0)) +  sum(aws_applicationelb_httpcode_target_5_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"} or vector(0))\n) * 100",
+          "instant": false,
+          "legendFormat": "2xx",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${Prometheus}"
+          },
+          "editorMode": "code",
+          "expr": "sum(aws_applicationelb_httpcode_target_3_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"}) / (\n    sum(aws_applicationelb_httpcode_target_2_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"}) + sum(aws_applicationelb_httpcode_target_4_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"} or vector(0))+ sum(aws_applicationelb_httpcode_target_3_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"} or vector(0)) +  sum(aws_applicationelb_httpcode_target_5_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"} or vector(0))\n) * 100",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "3xx",
+          "range": true,
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${Prometheus}"
+          },
+          "editorMode": "code",
+          "expr": "sum(aws_applicationelb_httpcode_target_4_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"}) / (\n    sum(aws_applicationelb_httpcode_target_2_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"}) + sum(aws_applicationelb_httpcode_target_4_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"} or vector(0))+ sum(aws_applicationelb_httpcode_target_3_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"} or vector(0)) +  sum(aws_applicationelb_httpcode_target_5_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"} or vector(0))\n) * 100",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "4xx",
+          "range": true,
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${Prometheus}"
+          },
+          "editorMode": "code",
+          "expr": "sum(aws_applicationelb_httpcode_target_5_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"}) / (\n    sum(aws_applicationelb_httpcode_target_2_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"}) + sum(aws_applicationelb_httpcode_target_4_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"} or vector(0))+ sum(aws_applicationelb_httpcode_target_3_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"} or vector(0)) +  sum(aws_applicationelb_httpcode_target_5_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"} or vector(0))\n) * 100",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "5xx",
+          "range": true,
+          "refId": "D"
+        }
+      ],
+      "title": "Response StatusCode Ratio",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${Prometheus}" 
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "semi-dark-green",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "4xx"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "5xx"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "5xx"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": []
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 9
+      },
+      "id": 15,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -620,7 +686,7 @@
         "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
-            "lastNotNull"
+            "mean"
           ],
           "fields": "",
           "values": false
@@ -637,7 +703,7 @@
             "uid": "${Prometheus}"
           },
           "editorMode": "code",
-          "expr": "(sum by (load_balancer)(aws_applicationelb_httpcode_target_2_xx_count_sum{cluster=\"$cluster\",load_balancer=\"$load_balancer\",target_group=~\"$ingress\"}) / sum by (load_balancer)(aws_applicationelb_request_count_sum{cluster=\"$cluster\",load_balancer=\"$load_balancer\",target_group=~\"$ingress\"})) * 100",
+          "expr": "sum(aws_applicationelb_httpcode_target_2_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"} or vector(0)) / (\n    sum(aws_applicationelb_httpcode_target_2_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"}) + sum(aws_applicationelb_httpcode_target_4_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"} or vector(0))+ sum(aws_applicationelb_httpcode_target_3_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"} or vector(0)) +  sum(aws_applicationelb_httpcode_target_5_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"} or vector(0))\n) * 100",
           "instant": false,
           "legendFormat": "2xx",
           "range": true,
@@ -649,7 +715,7 @@
             "uid": "${Prometheus}"
           },
           "editorMode": "code",
-          "expr": "(sum by (load_balancer)(aws_applicationelb_httpcode_target_3_xx_count_sum{cluster=\"$cluster\",load_balancer=\"$load_balancer\",target_group=~\"$ingress\"}) / sum by (load_balancer)(aws_applicationelb_request_count_sum{cluster=\"$cluster\",load_balancer=\"$load_balancer\",target_group=~\"$ingress\"})) * 100",
+          "expr": "sum(aws_applicationelb_httpcode_target_3_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"} or vector(0)) / (\n    sum(aws_applicationelb_httpcode_target_2_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"}) + sum(aws_applicationelb_httpcode_target_4_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"} or vector(0))+ sum(aws_applicationelb_httpcode_target_3_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"} or vector(0)) +  sum(aws_applicationelb_httpcode_target_5_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"} or vector(0))\n) * 100",
           "hide": false,
           "instant": false,
           "legendFormat": "3xx",
@@ -662,7 +728,7 @@
             "uid": "${Prometheus}"
           },
           "editorMode": "code",
-          "expr": "(sum by (load_balancer)(aws_applicationelb_httpcode_target_4_xx_count_sum{cluster=\"$cluster\",load_balancer=\"$load_balancer\",target_group=~\"$ingress\"}) / sum by (load_balancer)(aws_applicationelb_request_count_sum{cluster=\"$cluster\",load_balancer=\"$load_balancer\",target_group=~\"$ingress\"})) * 100",
+          "expr": "sum(aws_applicationelb_httpcode_target_4_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"} or vector(0)) / (\n    sum(aws_applicationelb_httpcode_target_2_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"}) + sum(aws_applicationelb_httpcode_target_4_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"} or vector(0))+ sum(aws_applicationelb_httpcode_target_3_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"} or vector(0)) +  sum(aws_applicationelb_httpcode_target_5_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"} or vector(0))\n) * 100",
           "hide": false,
           "instant": false,
           "legendFormat": "4xx",
@@ -675,7 +741,7 @@
             "uid": "${Prometheus}"
           },
           "editorMode": "code",
-          "expr": "(sum by (load_balancer)(aws_applicationelb_httpcode_target_5_xx_count_sum{cluster=\"$cluster\",load_balancer=\"$load_balancer\",target_group=~\"$ingress\"}) / sum by (load_balancer)(aws_applicationelb_request_count_sum{cluster=\"$cluster\",load_balancer=\"$load_balancer\",target_group=~\"$ingress\"})) * 100",
+          "expr": "sum(aws_applicationelb_httpcode_target_5_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"} or vector(0)) / (\n    sum(aws_applicationelb_httpcode_target_2_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"} or vector(0)) + sum(aws_applicationelb_httpcode_target_4_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"} or vector(0))+ sum(aws_applicationelb_httpcode_target_3_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"} or vector(0)) +  sum(aws_applicationelb_httpcode_target_5_xx_count_sum{cluster=\"$cluster\",target_group=~\"$ingress\"} or vector(0))\n) * 100",
           "hide": false,
           "instant": false,
           "legendFormat": "5xx",
@@ -689,7 +755,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${Prometheus}"
+        "uid": "${Prometheus}" 
       },
       "fieldConfig": {
         "defaults": {
@@ -859,7 +925,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${Prometheus}"
+        "uid": "${Prometheus}" 
       },
       "fieldConfig": {
         "defaults": {
@@ -993,7 +1059,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${Prometheus}"
+        "uid": "${Prometheus}" 
       },
       "fieldConfig": {
         "defaults": {
@@ -1091,7 +1157,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${Prometheus}"
+        "uid": "${Prometheus}" 
       },
       "fieldConfig": {
         "defaults": {
